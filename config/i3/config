@@ -197,7 +197,7 @@ exec --no-startup-id picom
 # flameshot 
 bindsym Print exec --no-startup-id flameshot gui
 # rofi
-bindsym $mod+Shift+f exec --no-startup-id ~/.config/rofi/themes/launcher.sh
+bindsym $mod+Shift+f exec --no-startup-id ~/dotfiles/config/rofi/themes/launcher.sh
 
 bindsym $mod+r mode "resize"
 
