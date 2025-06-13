@@ -183,13 +183,15 @@ mode "resize" {
 
 # COLORS
 # class                 border  backgr. text    indicator child_border
-client.focused          #9897C3 #9897C3 #2D2942 #babbf1   #9897C3 
-client.focused_inactive #9897C3 #9897C3 #2D2942 #babbf1   #9897C3 
-client.unfocused        #3f3c58 #3f3c58 #9fadd0 #292d2e   #3f3c58
-client.urgent           #994C4B #994C4B #2D2942 #900000   #900000
+client.focused          #98A8F8 #98A8F8 #ffffff #BCCEF8   #98A8F8
+client.focused_inactive #8EA7E9 #8EA7E9 #ffffff #C6E7FF   #8EA7E9
+client.unfocused        #3A6BB0 #3A6BB0 #D2E0FB #3A6BB0   #3A6BB0
+client.urgent           #ff6b6b #ff6b6b #ffffff #ff6b6b   #ff6b6b
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-# 
-client.background       #000000
+
+client.background       #1F4A85
+default_border pixel 4
+for_window [class="obsidian"] border pixel 4
 
 # AUTOSTART
 exec --no-startup-id picom
@@ -206,9 +208,9 @@ gaps inner 10 px
 gaps outer 5 px   
 
 # background photos
-exec_always --no-startup-id feh --bg-fill ~/Pictures/bg1.png ~/Pictures/bg2.jpg
-#monitors setup
-exec --no-startup-id autorandr --change
+#exec_always --no-startup-id feh --bg-fill ~/Pictures/bg1.png ~/Pictures/bg2.jpg
+#monitors && bg setup
+exec_always --no-startup-id autorandr --change && nitrogen --restore
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
