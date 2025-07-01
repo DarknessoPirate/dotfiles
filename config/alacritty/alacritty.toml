@@ -1,10 +1,14 @@
 [window]
 opacity = 0.8
-decorations = "transparent"
-padding = { x = 10, y = 10 }
+decorations = "full"
+padding = { x = 0, y = 0 }
 
 [font]
-size = 12
+size = 14
+
+[font.offset]
+x = 1
+y = 2
 
 [font.normal]
 family = "FantasqueSansM Nerd Font"
@@ -16,3 +20,116 @@ style = "Bold"
 [font.italic]
 family = "FantasqueSansM Nerd Font"
 style = "Italic"
+
+#### FONT SIZE #####################################################
+[[keyboard.bindings]]
+key = "Plus"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+####################################################################
+
+
+#### INTERRUPT #####################################################
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+chars = "\u0003"
+####################################################################
+
+
+#### COPY & PASTE ##################################################
+[[keyboard.bindings]]
+key = "C"
+mods = "Control"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control"
+action = "Paste"
+####################################################################
+
+
+#### TEXT SELECTION ###########
+# [[keyboard.bindings]]
+# key = "J"
+# mods = "Control"
+# mode = "Vi"
+# action = "SemanticLeft"        # Jump word left
+# 
+# [[keyboard.bindings]]
+# key = "L"
+# mods = "Control" 
+# mode = "Vi"
+# action = "SemanticRightEnd"         # Jump word right
+# 
+# [[keyboard.bindings]]
+# key = "K"
+# mods = "Control"
+# action = "ToggleNormalSelection"  
+# 
+# [[keyboard.bindings]]
+# key = "J"
+# mods = "Control|Shift"
+# mode = "Vi"
+# action = "SemanticLeftEnd" 
+# 
+# [[keyboard.bindings]]
+# key = "L"
+# mods = "Control|Shift"
+# mode = "Vi"
+# action = "SemanticRight" 
+# 
+####################################################################
+
+
+#### OVERRIDE VI DEFAULT MOVEMENT ##################################
+# [[keyboard.bindings]]
+# key = "Space"
+# mods = "Control"
+# action = "ToggleViMode"
+# 
+# [[keyboard.bindings]]
+# key = "i"
+# mode = "Vi"
+# action = "Up"
+# 
+# [[keyboard.bindings]]
+# key = "k"
+# mode = "Vi"
+# action = "Down"
+# 
+# [[keyboard.bindings]]
+# key = "j"
+# mode = "Vi"
+# action = "Left"
+# 
+# [[keyboard.bindings]]
+# key = "l"
+# mode = "Vi"
+# action = "Right"
+# 
+# [[keyboard.bindings]]
+# key = "h"
+# mode = "Vi"
+# action = "None"    # Disable default 'h' left movement
+# ####################################################################
+# 
+# 
+# #### CUT FUNCTIONALITY #############################################
+# [[keyboard.bindings]]
+# key = "X"
+# mods = "Control"
+# action = "Copy"
+# 
+# [[keyboard.bindings]]
+# key = "X"
+# mods = "Control"
+# action = "ClearSelection"
+# ####################################################################
+# 

@@ -1,0 +1,28 @@
+#!/bin/bash
+# ~/dotfiles/config/bin/flameshot-clipboard
+
+# Ensure daemon is running
+if ! pgrep -f "flameshot$" > /dev/null; then
+    flameshot &
+    sleep 0.5
+fi
+
+TEMP_FILE="/tmp/flameshot_$(date +%s).png"
+
+# Save to a file
+flameshot gui --path "$TEMP_FILE"
+
+# Check if screenshot taken
+if [ -f "$TEMP_FILE" ] && [ -s "$TEMP_FILE" ]; then
+    # Copy to clipboard
+    xclip -selection clipboard -t image/png -i "$TEMP_FILE"
+    
+    # cleanup
+    rm "$TEMP_FILE"
+    
+    # Send confirmation
+    notify-send "Flameshot" "Screenshot copied to clipboard" --icon=accessories-screenshot
+else
+    # Cancelled or no screenshot
+    [ -f "$TEMP_FILE" ] && rm "$TEMP_FILE"
+fi
