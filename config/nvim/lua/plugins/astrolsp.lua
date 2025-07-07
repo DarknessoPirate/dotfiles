@@ -43,7 +43,7 @@ return {
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
     config = {
-      -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
+      -- EXISTING: Your C# OmniSharp configuration
       omnisharp = {
         cmd = { "omnisharp" },
         filetypes = { "cs", "vb" },
@@ -73,6 +73,68 @@ return {
               includeSnippets = true, -- Enable code snippets
             },
           },
+        },
+      },
+
+      -- NEW: C++ clangd configuration
+      clangd = {
+        cmd = {
+          "clangd",
+          "--background-index", -- Index in background for better performance
+          "--clang-tidy", -- Enable clang-tidy integration
+          "--header-insertion=iwyu", -- Smart header insertion
+          "--completion-style=detailed", -- Detailed completion info
+          "--function-arg-placeholders", -- Show parameter placeholders
+          "--fallback-style=llvm", -- Default formatting style
+          "--all-scopes-completion", -- Complete from all accessible scopes
+          "--cross-file-rename", -- Enable cross-file renaming
+          "--pretty", -- Pretty-print JSON output
+        },
+        filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+        root_dir = function(fname)
+          local util = require "lspconfig.util"
+          return util.root_pattern(
+            "compile_commands.json", -- CMake compilation database
+            "compile_flags.txt", -- Simple flags file
+            ".clangd", -- clangd config file
+            "CMakeLists.txt", -- CMake project
+            "Makefile", -- Make project
+            "configure.ac", -- Autotools
+            "meson.build", -- Meson
+            ".git" -- Git repository
+          )(fname) or util.path.dirname(fname)
+        end,
+        init_options = {
+          usePlaceholders = true, -- Use placeholders in completions
+          completeUnimported = true, -- Complete unimported symbols
+          clangdFileStatus = true, -- Show file status in statusline
+        },
+        capabilities = {
+          textDocument = {
+            completion = {
+              editsNearCursor = true, -- Allow edits near cursor during completion
+            },
+          },
+          offsetEncoding = { "utf-16" }, -- Use UTF-16 encoding (clangd preference)
+        },
+        settings = {
+          clangd = {
+            InlayHints = {
+              Designators = true,
+              Enabled = true,
+              ParameterNames = true,
+              DeducedTypes = true,
+            },
+            semanticHighlighting = true,
+          },
+        },
+      },
+
+      -- NEW: GLSL language server configuration
+      glslls = {
+        filetypes = { "glsl", "vert", "frag", "geom", "tesc", "tese", "comp" },
+        settings = {
+          -- Add any specific GLSL settings here if needed
         },
       },
     },
@@ -110,7 +172,7 @@ return {
     -- mappings to be set up on attaching of a language server
     mappings = {
       n = {
-        -- a `cond` key can provided as the string of a server capability to be required to attach, or a function with `client` and `bufnr` parameters from the `on_attach` that returns a boolean
+        -- EXISTING: Your current mappings
         gD = {
           function() vim.lsp.buf.declaration() end,
           desc = "Declaration of current symbol",
@@ -123,28 +185,42 @@ return {
             return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
           end,
         },
-        -- Add signature help mapping
         ["<C-h>"] = {
           function() vim.lsp.buf.signature_help() end,
           desc = "Signature help",
           cond = "textDocument/signatureHelp",
         },
-
         ["<A-Space>"] = {
           function()
             -- Do nothing, or do whatever you want
           end,
           desc = "Do nothing",
         },
+
+        -- NEW: C++ specific mappings
+        ["<leader>ch"] = {
+          "<cmd>ClangdSwitchSourceHeader<cr>",
+          desc = "Switch between .h and .cpp files",
+          cond = function(client) return client.name == "clangd" end,
+        },
+        ["<leader>ct"] = {
+          "<cmd>ClangdTypeHierarchy<cr>",
+          desc = "Show type hierarchy",
+          cond = function(client) return client.name == "clangd" end,
+        },
+        ["<leader>cs"] = {
+          "<cmd>ClangdSymbolInfo<cr>",
+          desc = "Show symbol info",
+          cond = function(client) return client.name == "clangd" end,
+        },
       },
       i = {
-        -- Signature help in insert mode
+        -- EXISTING: Your current insert mode mappings
         ["<C-k>"] = {
           function() vim.lsp.buf.signature_help() end,
           desc = "Signature help",
           cond = "textDocument/signatureHelp",
         },
-
         ["<A-Space>"] = {
           function()
             -- Simply exit insert mode, same as Esc
