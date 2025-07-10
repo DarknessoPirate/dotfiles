@@ -172,7 +172,7 @@ return {
     -- mappings to be set up on attaching of a language server
     mappings = {
       n = {
-        -- EXISTING: Your current mappings
+
         gD = {
           function() vim.lsp.buf.declaration() end,
           desc = "Declaration of current symbol",
@@ -191,13 +191,11 @@ return {
           cond = "textDocument/signatureHelp",
         },
         ["<A-Space>"] = {
-          function()
-            -- Do nothing, or do whatever you want
-          end,
+          function() end,
           desc = "Do nothing",
         },
 
-        -- NEW: C++ specific mappings
+        -- C++ specific mappings
         ["<leader>ch"] = {
           "<cmd>ClangdSwitchSourceHeader<cr>",
           desc = "Switch between .h and .cpp files",
@@ -215,7 +213,7 @@ return {
         },
       },
       i = {
-        -- EXISTING: Your current insert mode mappings
+
         ["<C-k>"] = {
           function() vim.lsp.buf.signature_help() end,
           desc = "Signature help",

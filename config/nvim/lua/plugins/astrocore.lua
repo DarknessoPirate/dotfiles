@@ -80,45 +80,11 @@ return {
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
 
-        -- Git mappings (override AstroNvim defaults with Neogit)
-        ["<Leader>g"] = { desc = "󰊢 Git" },
-
-        -- Core Neogit functions
-        ["<Leader>gg"] = { "<cmd>Neogit<cr>", desc = "Open Neogit" },
-        ["<Leader>gc"] = { "<cmd>Neogit commit<cr>", desc = "Git commit" },
-        ["<Leader>gp"] = { "<cmd>Neogit push<cr>", desc = "Git push" },
-        ["<Leader>gP"] = { "<cmd>Neogit pull<cr>", desc = "Git pull" },
-
-        -- Status and branches through Neogit
-        ["<Leader>gs"] = { "<cmd>Neogit<cr>", desc = "Git status" },
-        ["<Leader>gb"] = {
-          function()
-            local neogit = require "neogit"
-            neogit.open { "branch" }
-          end,
-          desc = "Git branches",
-        },
-
-        -- Stash operations
-        ["<Leader>gS"] = {
-          function()
-            local neogit = require "neogit"
-            neogit.open { "stash" }
-          end,
-          desc = "Git stash",
-        },
-
-        -- Log/commits
-        ["<Leader>gl"] = {
-          function()
-            local neogit = require "neogit"
-            neogit.open { "log" }
-          end,
-          desc = "Git log",
-        },
-
         -- Current file commits (if you have Telescope)
         ["<Leader>gC"] = { "<cmd>Telescope git_commits<cr>", desc = "Git commits (current file)" },
+      },
+      t = {
+        ["<Esc>"] = { "<C-\\><C-n>", desc = "Exit terminal mode" },
       },
     },
   },
