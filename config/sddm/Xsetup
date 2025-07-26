@@ -1,0 +1,76 @@
+#!/bin/bash
+# Xsetup - run as root before the login dialog appears
+# /usr/share/sddm/scripts/Xsetup
+# Set explicit PATH and environment
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export DISPLAY="${DISPLAY:-:0}"
+
+# Create log for debugging
+LOG_FILE="/var/log/sddm-xsetup.log"
+exec 1> >(tee -a "$LOG_FILE")
+exec 2>&1
+
+echo "===================="
+echo "$(date): SDDM Xsetup starting"
+
+# NVIDIA Prime setup (your existing code)
+if [ -e /sbin/prime-offload ]; then
+    echo "$(date): Running NVIDIA Prime setup /sbin/prime-offload"
+    /sbin/prime-offload
+    sleep 1
+fi
+
+# Wait for X server to be ready
+echo "$(date): Waiting for X server to be ready..."
+for i in {1..20}; do
+    if xset q >/dev/null 2>&1; then
+        echo "$(date): X server ready after ${i} attempts"
+        break
+    fi
+    sleep 0.5
+done
+
+# Verify X server is responding
+if ! xset q >/dev/null 2>&1; then
+    echo "$(date): ERROR - X server not responding!"
+    exit 1
+fi
+
+# Additional delay for monitor detection (crucial for boot scenarios)
+echo "$(date): Waiting for monitors to be detected..."
+sleep 3
+
+# Show current state before configuration
+echo "$(date): Monitors before configuration:"
+xrandr | grep -E "(connected|disconnected)" 2>&1 || echo "Failed to get monitor info"
+
+# Load the specific autorandr profile that has correct configuration
+echo "$(date): Trying autorandr --load my-setup"
+if /usr/bin/autorandr --load my-setup 2>&1; then
+    echo "$(date): autorandr --load my-setup succeeded"
+else
+    echo "$(date): autorandr --load my-setup failed, trying --change"
+    if /usr/bin/autorandr --change 2>&1; then
+        echo "$(date): autorandr --change succeeded (but might be wrong layout)"
+        # Force the correct layout since autorandr --change might have wrong config
+        echo "$(date): Applying correct layout with xrandr"
+        /usr/bin/xrandr --output DP-4 --primary --mode 2560x1440 --rate 179.95 --pos 1920x0 \
+                        --output DP-2 --mode 1920x1080 --rate 144.00 --pos 0x360 \
+                        --output HDMI-0 --off --output DP-0 --off --output DP-1 --off \
+                        --output DP-3 --off --output DP-5 --off 2>&1
+    else
+        echo "$(date): autorandr completely failed, using direct xrandr"
+        # Fallback to direct xrandr (based on your working setup)
+        /usr/bin/xrandr --output DP-4 --primary --mode 2560x1440 --rate 179.95 --pos 1920x0 \
+                        --output DP-2 --mode 1920x1080 --rate 144.00 --pos 0x360 \
+                        --output HDMI-0 --off --output DP-0 --off --output DP-1 --off \
+                        --output DP-3 --off --output DP-5 --off 2>&1
+    fi
+fi
+
+# Show final state
+echo "$(date): Final monitor configuration:"
+xrandr | grep -E "connected.*[0-9]+x[0-9]+" 2>&1 || echo "No active monitors detected"
+
+echo "$(date): SDDM Xsetup completed"
+echo "===================="

@@ -89,6 +89,7 @@ return {
           "--all-scopes-completion", -- Complete from all accessible scopes
           "--cross-file-rename", -- Enable cross-file renaming
           "--pretty", -- Pretty-print JSON output
+          "--compile-commands-dir=build",
         },
         filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
         root_dir = function(fname)
@@ -130,7 +131,7 @@ return {
         },
       },
 
-      -- NEW: GLSL language server configuration
+      --  GLSL language server configuration
       glslls = {
         filetypes = { "glsl", "vert", "frag", "geom", "tesc", "tese", "comp" },
         settings = {

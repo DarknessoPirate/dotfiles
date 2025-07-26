@@ -16,6 +16,7 @@ zinit ice depth=1 as"command" from"gh-r"
 zinit light starship/starship
 
 # Initialize starship (keep this line)
+eval $(keychain --eval --quiet id_ed25519)
 eval "$(starship init zsh)"
 
 # Initialize fzf 
