@@ -8,6 +8,25 @@ return {
   "AstroNvim/astrocore",
   ---@type AstroCoreOpts
   opts = {
+    autocmds = {
+      auto_change_dir = {
+        {
+          event = "VimEnter",
+          callback = function()
+            local first_arg = vim.fn.argv(0)
+            if first_arg and first_arg ~= "" then
+              local path = vim.fn.expand(first_arg)
+              if vim.fn.isdirectory(path) == 1 then
+                vim.cmd("cd " .. vim.fn.fnameescape(path))
+              else
+                local dir = vim.fn.fnamemodify(path, ":p:h")
+                vim.cmd("cd" .. vim.fn.fnameescape(dir))
+              end
+            end
+          end,
+        },
+      },
+    },
     -- Configure core features of AstroNvim
     features = {
       large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
@@ -37,6 +56,7 @@ return {
     },
     -- vim options can be configured here
     options = {
+
       opt = { -- vim.opt.<key>
         relativenumber = true, -- sets vim.opt.relativenumber
         number = true, -- sets vim.opt.number

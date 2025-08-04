@@ -7,5 +7,4 @@ return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.java" },
-  -- Add more packs as separate entries
 }
