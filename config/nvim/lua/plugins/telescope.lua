@@ -197,15 +197,14 @@ return {
         maps.n["<leader>Ts"] = { "<cmd>Telescope symbols<cr>", desc = "Symbols" }
         maps.n["<leader>Tt"] = { "<cmd>Telescope colorscheme<cr>", desc = "Themes" }
         maps.n["<leader>Tr"] = { "<cmd>Telescope registers<cr>", desc = "Registers" }
+        maps.n["<leader>Td"] = { "<cmd>Telescope lsp_references<cr>", desc = "References (Telescope)" }
 
-        -- LSP telescope pickers (enhance existing LSP menu)
-        maps.n["<leader>lR"] = { "<cmd>Telescope lsp_references<cr>", desc = "References (Telescope)" }
-        maps.n["<leader>lD"] = { "<cmd>Telescope lsp_definitions<cr>", desc = "Definitions (Telescope)" }
-        maps.n["<leader>lI"] = { "<cmd>Telescope lsp_implementations<cr>", desc = "Implementations (Telescope)" }
-        maps.n["<leader>lT"] = { "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type definitions (Telescope)" }
-        maps.n["<leader>lS"] = { "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document symbols (Telescope)" }
-        maps.n["<leader>lW"] = { "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace symbols (Telescope)" }
-
+        maps.n["<leader>Td"] = { "<cmd>Telescope lsp_references<cr>", desc = "References (Telescope)" }
+        maps.n["<leader>TD"] = { "<cmd>Telescope lsp_definitions<cr>", desc = "Definitions (Telescope)" }
+        maps.n["<leader>TI"] = { "<cmd>Telescope lsp_implementations<cr>", desc = "Implementations (Telescope)" }
+        maps.n["<leader>TT"] = { "<cmd>Telescope lsp_type_definitions<cr>", desc = "Type definitions (Telescope)" }
+        maps.n["<leader>TS"] = { "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document symbols (Telescope)" }
+        maps.n["<leader>TW"] = { "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace symbols (Telescope)" }
         return opts
       end,
     },

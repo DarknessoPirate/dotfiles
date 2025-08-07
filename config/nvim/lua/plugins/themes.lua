@@ -46,6 +46,30 @@ return {
 
   -- Manual theme installations with configurations
   {
+    "AstroNvim/astrotheme",
+    opts = {
+      palette = "astrodark",
+      background = {
+        transparent = true,
+      },
+      highlights = {
+        global = {
+          Normal = { bg = "NONE" },
+          NormalNC = { bg = "NONE" },
+          SignColumn = { bg = "NONE" },
+          NormalFloat = { bg = "NONE" },
+          FloatBorder = { bg = "NONE" },
+
+          NeoTreeNormal = { bg = "NONE" },
+          NeoTreeNormalNC = { bg = "NONE" },
+          NeoTreeEndOfBuffer = { bg = "NONE" },
+          NeoTreeWinSeparator = { bg = "NONE" },
+        },
+      },
+    },
+  },
+
+  {
     "tiagovla/tokyodark.nvim",
     name = "tokyodark",
     priority = 1000,

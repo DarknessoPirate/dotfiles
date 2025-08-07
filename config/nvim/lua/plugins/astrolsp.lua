@@ -9,9 +9,11 @@ return {
   ---@type AstroLSPOpts
   opts = {
     -- Configuration table of features provided by AstroLSP
+    capabilities = require("blink.cmp").get_lsp_capabilities(),
+
     features = {
       codelens = true, -- enable/disable codelens refresh on start
-      inlay_hints = false, -- enable/disable inlay hints on start
+      inlay_hints = true, -- enable/disable inlay hints on start
       semantic_tokens = true, -- enable/disable semantic token highlighting
       signature_help = true,
     },
@@ -76,7 +78,6 @@ return {
         },
       },
 
-      -- NEW: C++ clangd configuration
       clangd = {
         cmd = {
           "clangd",
@@ -84,12 +85,15 @@ return {
           "--clang-tidy", -- Enable clang-tidy integration
           "--header-insertion=iwyu", -- Smart header insertion
           "--completion-style=detailed", -- Detailed completion info
-          "--function-arg-placeholders", -- Show parameter placeholders
+          "--function-arg-placeholders=true", -- Show parameter placeholders
           "--fallback-style=llvm", -- Default formatting style
           "--all-scopes-completion", -- Complete from all accessible scopes
           "--cross-file-rename", -- Enable cross-file renaming
           "--pretty", -- Pretty-print JSON output
-          "--compile-commands-dir=build",
+          "--compile-commands-dir=./build",
+          "--header-insertion-decorators",
+          "--suggest-missing-includes",
+          "--pch-storage=memory",
         },
         filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
         root_dir = function(fname)
@@ -109,6 +113,7 @@ return {
           usePlaceholders = true, -- Use placeholders in completions
           completeUnimported = true, -- Complete unimported symbols
           clangdFileStatus = true, -- Show file status in statusline
+          fallbackFlags = { "-std=c++20", "-Wall", "-Wextra" },
         },
         capabilities = {
           textDocument = {
@@ -133,11 +138,13 @@ return {
 
       --  GLSL language server configuration
       glslls = {
-        filetypes = { "glsl", "vert", "frag", "geom", "tesc", "tese", "comp" },
-        settings = {
-          -- Add any specific GLSL settings here if needed
-        },
+        cmd = { "glslls", "--stdin", "--target-env", "opengl" },
+        filetypes = { "glsl", "vert", "frag", "geom", "tesc", "tese", "comp", "shader" },
       },
+      root_dir = function(fname)
+        local util = require "lspconfig.util"
+        return util.root_pattern ".git"(fname) or vim.fs.dirname(fname)
+      end,
     },
     -- customize how language servers are attached
     handlers = {

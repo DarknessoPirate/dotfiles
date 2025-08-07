@@ -2,35 +2,7 @@ return {
   "nvim-neo-tree/neo-tree.nvim",
   opts = {
     window = {
-      mappings = {
-        ["<C-x>"] = {
-          function(state)
-            local node = state.tree:get_node()
-            if node.type == "file" then
-              local filepath = node:get_id()
-              -- Cross-platform executable runner
-              vim.fn.jobstart(filepath, { detach = true })
-            end
-          end,
-          desc = "Execute file",
-        },
-        ["<C-t>"] = {
-          function(state)
-            local node = state.tree:get_node()
-            if node.type == "file" then
-              local filepath = node:get_id()
-              -- Move to the main editing area first
-              vim.cmd "wincmd l"
-              -- Open terminal at the bottom
-              vim.cmd "botright split"
-              vim.cmd("terminal " .. vim.fn.shellescape(filepath))
-              vim.cmd "resize 15"
-            end
-          end,
-          desc = "Run in terminal",
-        },
-        ["u"] = "navigate_up",
-      },
+      mappings = {},
     },
 
     filesystem = {
@@ -59,6 +31,38 @@ return {
       },
       -- Optional: Use libuv file watcher for better performance
       use_libuv_file_watcher = true,
+
+      window = {
+        mappings = {
+          ["u"] = "navigate_up",
+          ["<C-t>"] = {
+            function(state)
+              local node = state.tree:get_node()
+              if node.type == "file" then
+                local filepath = node:get_id()
+                -- Move to the main editing area first
+                vim.cmd "wincmd l"
+                -- Open terminal at the bottom
+                vim.cmd "botright split"
+                vim.cmd("terminal " .. vim.fn.shellescape(filepath))
+                vim.cmd "resize 15"
+              end
+            end,
+            desc = "Run in terminal",
+          },
+          ["<C-x>"] = {
+            function(state)
+              local node = state.tree:get_node()
+              if node.type == "file" then
+                local filepath = node:get_id()
+                -- Cross-platform executable runner
+                vim.fn.jobstart(filepath, { detach = true })
+              end
+            end,
+            desc = "Execute file",
+          },
+        },
+      },
     },
   },
 }
