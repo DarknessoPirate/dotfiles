@@ -40,12 +40,12 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
+      "glsl_analyzer",
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
     config = {
-      -- EXISTING: Your C# OmniSharp configuration
+
       omnisharp = {
         cmd = { "omnisharp" },
         filetypes = { "cs", "vb" },
@@ -56,7 +56,6 @@ return {
         enable_import_completion = true, -- Suggests imports
         enable_roslyn_analyzers = true, -- Code analysis warnings
 
-        -- FIXED: settings should be INSIDE omnisharp config
         settings = {
           omnisharp = {
             enableEditorConfigSupport = true, -- Respects .editorconfig files
@@ -94,6 +93,8 @@ return {
           "--header-insertion-decorators",
           "--suggest-missing-includes",
           "--pch-storage=memory",
+          "--completion-parse=auto",
+          "--index",
         },
         filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
         root_dir = function(fname)
@@ -114,6 +115,7 @@ return {
           completeUnimported = true, -- Complete unimported symbols
           clangdFileStatus = true, -- Show file status in statusline
           fallbackFlags = { "-std=c++20", "-Wall", "-Wextra" },
+          semanticHighlighting = true,
         },
         capabilities = {
           textDocument = {
@@ -136,15 +138,20 @@ return {
         },
       },
 
-      --  GLSL language server configuration
-      glslls = {
-        cmd = { "glslls", "--stdin", "--target-env", "opengl" },
-        filetypes = { "glsl", "vert", "frag", "geom", "tesc", "tese", "comp", "shader" },
+      glsl_analyzer = {
+
+        cmd = { "sh", "-c", "glsl_analyzer 2>/dev/null" },
+        -- Log stderr to file for debugging (alternative)
+        -- cmd = { "sh", "-c", "glsl_analyzer 2>/tmp/glsl_analyzer_debug.log" },
+
+        filetypes = { "glsl", "vert", "tesc", "tese", "frag", "geom", "comp" },
+        root_dir = function(fname)
+          local util = require "lspconfig.util"
+          return util.root_pattern(".git", "Makefile")(fname) or util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+        single_file_support = true,
+        settings = {},
       },
-      root_dir = function(fname)
-        local util = require "lspconfig.util"
-        return util.root_pattern ".git"(fname) or vim.fs.dirname(fname)
-      end,
     },
     -- customize how language servers are attached
     handlers = {
@@ -192,15 +199,6 @@ return {
           cond = function(client)
             return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
           end,
-        },
-        ["<C-h>"] = {
-          function() vim.lsp.buf.signature_help() end,
-          desc = "Signature help",
-          cond = "textDocument/signatureHelp",
-        },
-        ["<A-Space>"] = {
-          function() end,
-          desc = "Do nothing",
         },
 
         -- C++ specific mappings

@@ -128,6 +128,7 @@ return {
                 "mkdir -p build &&",
                 "cmake -B build -DCMAKE_BUILD_TYPE=Debug &&",
                 "cmake --build build &&",
+                "./bin/debug/the_project_name", -- ADD THIS LINE!
               },
             },
             {
@@ -137,6 +138,7 @@ return {
                 "mkdir -p build &&",
                 "cmake -B build -DCMAKE_BUILD_TYPE=Release &&",
                 "cmake --build build &&",
+                "./bin/release/the_project_name", -- ADD THIS LINE!
               },
             },
             {
@@ -147,6 +149,7 @@ return {
                 "mkdir -p build &&",
                 "cmake -B build -DCMAKE_BUILD_TYPE=Debug &&",
                 "cmake --build build &&",
+                "./bin/debug/the_project_name", -- ADD THIS LINE!
               },
             },
           }

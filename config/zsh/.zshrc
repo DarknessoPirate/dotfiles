@@ -1,3 +1,7 @@
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
 # Directory to store zinit and plugins
 ZINIT_HOME=${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git
 
@@ -15,8 +19,9 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit ice depth=1 as"command" from"gh-r"
 zinit light starship/starship
 
-# Initialize starship (keep this line)
-eval $(keychain --eval --quiet id_ed25519)
+if [ -n "$DESKTOP_SESSION" ]; then
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/keyring/ssh"
+fi
 eval "$(starship init zsh)"
 
 # Initialize fzf 

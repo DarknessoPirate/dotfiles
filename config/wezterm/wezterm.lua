@@ -98,7 +98,6 @@ config.keys = {
 -- Additional useful settings
 config.enable_wayland = false -- If  on Wayland
 config.check_for_updates = false
-config.show_update_window = false
 
 -- Performance optimizations for telescope/file finders
 config.max_fps = 180

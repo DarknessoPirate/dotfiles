@@ -216,12 +216,15 @@ exec --no-startup-id picom
 # turn off screen saver
 exec --no-startup-id xset s off
 exec --no-startup-id xset -dpms
-
+exec --no-startup-id setxkbmap -option caps:ctrl_modifier
 
 
 # flameshot 
-bindsym Print exec --no-startup-id import png:- | xclip -selection clipboard -t image/png
-bindsym $mod+Shift+f exec --no-startup-id ~/dotfiles/config/rofi/themes/launcher.sh
+# bindsym Print exec --no-startup-id import png:- | xclip -selection clipboard -t image/png
+#bindsym Print exec --no-startup-id flameshot gui
+#bindsym $mod+Shift+f exec --no-startup-id ~/dotfiles/config/rofi/themes/launcher.sh
+bindsym Print exec --no-startup-id scrot -s -e 'xclip -selection clipboard -t image/png < $f && rm $f'
+bindsym $mod+Shift+f exec --no-startup-id rofi -show drun
 
 # background photos
 #exec_always --no-startup-id feh --bg-fill ~/Pictures/bg1.png ~/Pictures/bg2.jpg
@@ -233,7 +236,9 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # gaps between windows
 gaps inner 10 px  
-gaps outer 5 px  
+gaps outer 5 px 
+bindsym $mod+Shift+g gaps inner all set 0; gaps outer all set 0
+bindsym $mod+Ctrl+g gaps inner all set 10; gaps outer all set 5
 
 for_window [class="easyeffects"] floating enable
 for_window [class="mpv"] floating enable

@@ -10,16 +10,23 @@ return {
       -- Ensure the ensure_installed table exists
       opts.ensure_installed = opts.ensure_installed or {}
 
+      -- CRITICAL: Ensure registries are properly configured for nvim-java
+      opts.registries = opts.registries or {}
+      vim.list_extend(opts.registries, {
+        "github:nvim-java/mason-registry", -- This MUST be first!
+        "github:mason-org/mason-registry",
+      })
+
       -- Add all the tools we want to auto-install
       vim.list_extend(opts.ensure_installed, {
         -- Language Servers
         "clangd", -- C++ Language Server
-        "glslls", -- GLSL Language Server for OpenGL shaders
-        "omnisharp", -- C# Language Server (if not already installed)
+        "omnisharp", -- C# Language Server
+        -- NOTE: jdtls will be installed automatically by nvim-java
 
         -- Formatters
         "clang-format", -- C++ formatter
-        "csharpier", -- C# formatter (optional)
+        "csharpier", -- C# formatter
 
         -- Linters
         "cpplint", -- C++ linter
@@ -27,45 +34,19 @@ return {
 
         -- Debuggers
         "codelldb", -- C++ debugger
-        "netcoredbg", -- C# debugger (optional)
+        "netcoredbg", -- C# debugger
 
         -- Additional useful tools
-        "cmake-language-server", -- CMake LSP (for CMakeLists.txt files)
-        "marksman", -- Markdown LSP (useful for documentation)
+        "cmake-language-server", -- CMake LSP
+        "marksman", -- Markdown LSP
       })
 
       return opts
     end,
+    -- CRITICAL: Proper config function that merges opts
+    config = function(_, opts) require("mason").setup(opts) end,
   },
 
-  -- Optional: Add syntax highlighting plugins
-  {
-    "tikhomirov/vim-glsl",
-    ft = { "glsl", "vert", "frag", "geom", "tesc", "tese", "comp" },
-    config = function()
-      -- GLSL file type detection (moved from astrolsp to avoid conflicts)
-      vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-        pattern = {
-          "*.vs",
-          "*.fs",
-          "*.gs",
-          "*.tcs",
-          "*.tes",
-          "*.comp",
-          "*.vert",
-          "*.frag",
-          "*.geom",
-          "*.tesc",
-          "*.tese",
-          "*.glsl",
-        },
-        callback = function() vim.bo.filetype = "glsl" end,
-        desc = "Set GLSL filetype for shader files",
-      })
-    end,
-  },
-
-  -- Optional: Enhanced clangd experience
   {
     "p00f/clangd_extensions.nvim",
     ft = { "c", "cpp", "objc", "objcpp", "cuda" },
