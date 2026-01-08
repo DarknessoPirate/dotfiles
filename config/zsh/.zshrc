@@ -19,9 +19,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit ice depth=1 as"command" from"gh-r"
 zinit light starship/starship
 
-if [ -n "$DESKTOP_SESSION" ]; then
-    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/keyring/ssh"
-fi
 eval "$(starship init zsh)"
 
 # Initialize fzf 
